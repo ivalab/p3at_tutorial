@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import getch
-import roslib; roslib.load_manifest('p3dx_mover')
 import rospy
 
 
