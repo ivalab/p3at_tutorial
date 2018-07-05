@@ -463,9 +463,9 @@ name="pioneer3at"
     <commandTopic>cmd_vel</commandTopic>
     <odometryTopic>odom</odometryTopic>
     <odometryFrame>odom</odometryFrame>
-    <covarianc_x> 0.001</covariance_x>
+<!--    <covarianc_x> 0.001</covariance_x>
     <covariance_y>0.001</covariance_y>
-    <covariance_yaw>0.01</covariance_yaw>
+    <covariance_yaw>0.01</covariance_yaw>-->
     <broadcastTF>1</broadcastTF>
   </plugin>
 </gazebo>
