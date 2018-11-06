@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro"
+name="pioneer3at"
+>
+  <xacro:include filename="$(find p3at_tutorial)/robots/pioneer3at.xacro" />
+
+
+  <xacro:macro name="sensor_camera" params="parent">
+    <joint name="additional_camera" type="fixed">
+      <!--<origin xyz="0.1 0.0 0.41" rpy="${cam_or} ${cam_op} ${cam_oy}" />-->
+      <origin xyz="0.2 0 0.037" rpy="0 0 0" />
+      <parent link="top_plate" />
+      <child link="stereo_camera_frame" />
+    </joint>
+    <link name="stereo_camera_frame"/>
+
+    <joint name="stereo_camera_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
+      <parent link="stereo_camera_frame" />
+      <child link="stereo_camera_optical_frame" />
+    </joint>
+    <link name="stereo_camera_optical_frame"/>
+
+    <joint name="stereo_camera_move_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="stereo_camera_frame"/>
+      <child link="stereo_camera_move_link"/>
+    </joint>  
+
+    <link name="stereo_camera_move_link">
+      <visual>
+        <geometry>
+          <box size="0.08 0.1 0.03" />
+        </geometry>
+        <material name="Green" />
+      </visual>
+      <inertial>
+        <mass value="0.000001" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+          iyy="0.0001" iyz="0.0"
+          izz="0.0001" />
+      </inertial>
+    </link>
+
+    <turtlebot_stereo_camera/>
+  </xacro:macro>
+
+    <xacro:macro name="turtlebot_stereo_camera">
+    <gazebo reference="stereo_camera_move_link">  
+      <sensor type="multicamera" name="stereo_camera_sensor">
+        <update_rate>30.0</update_rate>
+        <camera name="left">
+          <horizontal_fov>${60.0*M_PI/180.0}</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <!--<format>L8</format>-->
+            <format>B8G8R8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>8</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.0</stddev>
+          </noise>
+        </camera>
+        <camera name="right">
+          <pose>0 -0.12 0 0 0 0</pose>
+          <horizontal_fov>${60.0*M_PI/180.0}</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <!--<format>L8</format>-->
+            <format>B8G8R8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>8</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.0</stddev>
+          </noise>
+        </camera>
+        <plugin name="stereo_camera_controller" filename="libgazebo_ros_multicamera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>30.0</updateRate>
+          <cameraName>multisense_sl/camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>stereo_camera_optical_frame</frameName>
+          <!--frameName>stereo_camera_optical_frame</frameName-->
+          <!--<rightFrameName>right_camera_optical_frame</rightFrameName>-->
+          <hackBaseline>0.12</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <sensor_camera  parent="base_link"/>
+
+
+</robot>
