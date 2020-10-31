@@ -3,7 +3,7 @@
     <!-- Different files for different sensors: hokuyo, realsense, stereo -->
     <arg name="robot"/> 
     <arg name="3d_sensor"/>  
-    <arg name="urdf_file" default="$(find xacro)/xacro.py $(find p3at_tutorial)/robots/$(arg robot)_$(arg 3d_sensor).xacro --inorder" />
+    <arg name="urdf_file" default="$(find xacro)/xacro $(find p3at_tutorial)/robots/$(arg robot)_$(arg 3d_sensor).xacro --inorder" />
     <param name="robot_description" command="$(arg urdf_file)" />
 
     <!-- push robot_description to factory and spawn robot in gazebo -->

@@ -23,7 +23,8 @@ left = 0.0
 keyPress = 0
 
 while(keyPress != USER_QUIT):
-	pub = rospy.Publisher('/RosAria/cmd_vel', Twist)
+	#pub = rospy.Publisher('/RosAria/cmd_vel', Twist)
+	pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 	rospy.init_node('userToRosAria')
 
 	twist = Twist()
@@ -56,7 +57,8 @@ while(keyPress != USER_QUIT):
 	rospy.sleep(0.01)
 
 
-pub = rospy.Publisher('/RosAria/cmd_vel', Twist)
+#pub = rospy.Publisher('/RosAria/cmd_vel', Twist)
+pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 rospy.init_node('userToRosAria')
 twist = Twist()
 pub.publish(twist)
